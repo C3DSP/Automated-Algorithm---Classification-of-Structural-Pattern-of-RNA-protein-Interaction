@@ -1,0 +1,52 @@
+import os
+import csv
+
+def get_files(path):
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file)):
+            yield file
+
+count_file_hbonds = 0
+dir = 'hbonds_raw'
+hbond_count = 1
+
+for file in get_files(r'hbonds_raw'):
+    if ('-2.hbonds' in file):
+        pdb_id = file[:4]
+        count_file_hbonds = count_file_hbonds + 1
+        
+        string_combine = ''
+        matrix = []
+        with open('hbonds_raw/'+file) as f:
+            reader = csv.reader(f, delimiter='/')
+        
+            for row in reader:
+                row_matrix = []
+                donor = row[1].strip()
+                word_tmp_donor = []
+                word_tmp_donor = donor.split(" ")
+
+                donor_2 = word_tmp_donor[0] + " " + word_tmp_donor[1] + " " + word_tmp_donor[2] 
+
+                convert_hbond_count = str(hbond_count) 
+                string_combine = "HB_" + convert_hbond_count + "," + pdb_id + "," + word_tmp_donor[0] + " " + word_tmp_donor[1] + " " + word_tmp_donor[2] + "," + word_tmp_donor[3]
+
+                row_matrix.append(donor_2) 
+
+                string = row[2]
+                words = string.split('no') 
+        
+                acceptor = words[0].strip()
+                word_tmp_acceptor = []
+                word_tmp_acceptor = acceptor.split(" ")
+                acceptor_2 = word_tmp_acceptor[0] + " " + word_tmp_acceptor[1] + " " + word_tmp_acceptor[2] #chain res_type res_num
+                
+                string_combine = string_combine + "," + word_tmp_acceptor[0] + " " + word_tmp_acceptor[1] + " " + word_tmp_acceptor[2] + "," + word_tmp_acceptor[3]
+                print(string_combine)
+                row_matrix.append(acceptor_2) 
+
+                matrix.append(row_matrix)
+                hbond_count = hbond_count + 1
+        
+if (count_file_hbonds == 0):
+    print ('EROR: No *-2.hbonds')
