@@ -1,0 +1,60 @@
+import csv
+import sys
+
+pdb_id = str(sys.argv[1]) 
+file_hbonds = 'hbonds_raw/' + pdb_id + '.hbonds'
+file_hbonds_2 = 'hbonds_raw/' + pdb_id + '-2.hbonds'
+
+lines = []
+
+with open(file_hbonds, 'r') as fp:
+    lines = fp.readlines()
+
+with open(file_hbonds_2 , 'w') as fp:
+    for number, line in enumerate(lines):
+        if number not in [0, 1, 2, 3, 4, 5, 6, 7]:
+            fp.write(line)
+
+matrix = []
+with open(file_hbonds_2) as f:
+    reader = csv.reader(f, delimiter='/')
+    for row in reader:
+        row_matrix = []
+
+        donor = row[1].strip()
+        word_tmp_donor = donor.split(" ")
+
+        donor_2 = word_tmp_donor[0] + " " + word_tmp_donor[1] + " " + word_tmp_donor[2] 
+       
+        row_matrix.append(donor_2) 
+
+        string = row[2]
+        words = string.split('no') 
+        
+        acceptor = words[0].strip()
+        word_tmp_acceptor = acceptor.split(" ")
+        acceptor_2 = word_tmp_acceptor[0] + " " + word_tmp_acceptor[1] + " " + word_tmp_acceptor[2] #chain res_type res_num
+        row_matrix.append(acceptor_2) 
+
+        matrix.append(row_matrix) 
+
+def get_unique_list(seq):
+  seen = []
+  return [x for x in seq if x not in seen and not seen.append(x)]
+
+for row in matrix:
+    row.sort()
+
+matrix_sorted_unique = get_unique_list(matrix)
+
+for row in matrix_sorted_unique:
+    row.sort()
+    len_row = len(row)
+    i = 1
+    for element in row:
+        if(i == len_row):
+            print(element, end="")
+        else:
+            print(element, end=",")
+        i = i + 1 
+print()
