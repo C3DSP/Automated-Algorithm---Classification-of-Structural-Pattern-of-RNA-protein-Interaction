@@ -1,0 +1,48 @@
+import sys
+import csv
+
+pattern = str(sys.argv[1])
+pdb_id = str(sys.argv[2])
+
+file_lp = "lp_files/" + pattern + "_" + pdb_id + ".lp"
+
+matrix = []
+matrix_raw = []
+with open(file_lp) as f:
+    reader = csv.reader(f, delimiter=',')
+    for row in reader:
+        row_matrix = []
+        row_matrix_raw = []
+        len_row = len(row)
+        for i in range(len_row):
+          row_matrix.append(row[i]) 
+          row_matrix_raw.append(row[i])
+        matrix.append(row_matrix) 
+        matrix_raw.append(row_matrix_raw)
+      
+for row in matrix:
+    row.sort()
+
+matrix_raw_filtered = []
+newlist = [] 
+duplist = [] 
+index_i = 0
+for i in matrix:
+    if i not in newlist:
+        newlist.append(i)
+        matrix_raw_filtered.append(matrix_raw[index_i])
+    else:
+        duplist.append(i) 
+
+    index_i = index_i + 1      
+
+for row in matrix_raw_filtered:
+    len_row = len(row)
+    i = 1
+    for element in row:
+        if(i == len_row):
+            print(element, end="")
+        else:
+            print(element, end=",")
+        i = i + 1 
+    print()
