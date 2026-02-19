@@ -1,0 +1,70 @@
+from grandiso import find_motifs
+import networkx as nx
+import sys
+import csv
+
+pdb_id = str(sys.argv[1]) 
+
+file_hbonds = "nodes_filtered/" + pdb_id + ".nodes"
+
+host = nx.read_adjlist(file_hbonds, delimiter =',',
+                          create_using = nx.Graph())
+
+motif = nx.Graph()
+
+pattern_code = int(sys.argv[2]) 
+
+if (pattern_code == 1):
+    residue_number = 2
+    motif.add_edge("A", "B")
+
+elif (pattern_code == 2):
+    residue_number = 3
+    motif.add_edge("A", "B")
+    motif.add_edge("B", "C")
+
+elif (pattern_code == 3):
+    residue_number = 4   
+    motif.add_edge("A", "B")
+    motif.add_edge("B", "C")
+    motif.add_edge("C", "D")
+
+elif (pattern_code == 4): 
+    residue_number = 4
+    motif.add_edge("A", "B")
+    motif.add_edge("A", "C")
+    motif.add_edge("A", "D")
+
+elif (pattern_code == 5):
+    residue_number = 5 
+    motif.add_edge("A", "B")
+    motif.add_edge("B", "C")
+    motif.add_edge("C", "D")
+    motif.add_edge("D", "E")
+
+elif (pattern_code == 6): 
+    residue_number = 5
+    motif.add_edge("A", "B")
+    motif.add_edge("B", "C")
+    motif.add_edge("C", "D")
+    motif.add_edge("C", "E")
+
+elif (pattern_code == 7): 
+    residue_number = 5
+    motif.add_edge("A", "B")
+    motif.add_edge("A", "C")
+    motif.add_edge("A", "D")
+    motif.add_edge("A", "E")
+
+fmotifs = find_motifs(motif, host)
+
+for row in fmotifs:
+    i = 0
+    str_temp = pdb_id + ","
+    for element in row:
+        i = i + 1
+        if(i == residue_number):
+            str_temp = str_temp + row[element]
+        else:
+            str_temp = str_temp + row[element] + ","
+    print(str_temp)
