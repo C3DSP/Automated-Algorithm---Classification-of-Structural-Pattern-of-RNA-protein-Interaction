@@ -1,0 +1,152 @@
+import csv
+import sys
+import re
+
+pattern = str(sys.argv[1])
+pattern_upper = pattern.upper()
+
+dir_hbonds_files = "extract_hbonds_format/" + pattern + "/"
+
+dir_master_hbonds = "master_hbonds/" + pattern + "/" + pattern
+
+dir_lp = "lp_files/"
+
+file_lp = dir_lp + pattern + ".csv"
+
+file_v3_csv = dir_lp + pattern + "-v3.csv"
+
+file_v3_hb_group = dir_lp + pattern + "-v3-hbonds_group.csv"
+
+array_csv = []
+file1 = open(file_lp , 'r')
+Lines = file1.readlines()
+
+for line in Lines:
+    array_csv.append(line.strip()) 
+
+matrix_2d_hbond = []
+matrix_raw_2d_hbond = []
+with open(file_lp) as f:
+    reader = csv.reader(f, delimiter=',')
+    for row in reader:
+        pattern_id = row[0]
+        pdbid = row[1]
+
+        file_hbonds = dir_hbonds_files + pdbid + "_" + pattern_id + ".hbonds"
+
+        row_matrix = []
+        row_matrix_raw = []
+
+        with open(file_hbonds) as f_hbonds:
+            reader_hbonds = csv.reader(f_hbonds, delimiter=',')
+            for row_hbonds in reader_hbonds:
+                str_tmp = row_hbonds[2].split(" ")
+                res_donor = str_tmp[1]        
+                atom_donor = row_hbonds[3]    
+
+                str_tmp_2 = row_hbonds[4].split(" ")
+                res_acceptor = str_tmp_2[1]   
+                atom_acceptor = row_hbonds[5] 
+
+                str_donor_acceptor = res_donor + "," + atom_donor + "," + res_acceptor + "," + atom_acceptor
+                row_matrix.append(str_donor_acceptor)     
+                row_matrix_raw.append(str_donor_acceptor)
+        
+        matrix_2d_hbond.append(row_matrix) 
+        matrix_raw_2d_hbond.append(row_matrix_raw)
+
+
+print(len(matrix_2d_hbond))
+print(len(matrix_raw_2d_hbond))
+
+matrix_1d_hbond_sort = []
+
+for row in matrix_2d_hbond:
+    row.sort()
+    len_row = len(row)
+    i = 1
+    str_tmp = ""
+    for element in row:
+        if(i == len_row):
+            str_tmp = str_tmp + element + ""
+        else:
+            str_tmp = str_tmp + element +"|"
+        i = i + 1 
+        
+    matrix_1d_hbond_sort.append(str_tmp)
+
+print(len(matrix_1d_hbond_sort))
+
+def get_unique_list(seq):
+  seen = []
+  return [x for x in seq if x not in seen and not seen.append(x)]
+
+matrix_sorted_unique_2d_hbond = get_unique_list(matrix_2d_hbond)
+print (len(matrix_sorted_unique_2d_hbond))
+
+
+matrix_1d_hbond_sort_unique = []
+count = 1
+for row in matrix_sorted_unique_2d_hbond:
+    row.sort()
+    len_row = len(row)
+    i = 1
+    str_tmp = ""
+    print_dir_master_hbonds = dir_master_hbonds + "_master_hb_" + str(count)
+    print(print_dir_master_hbonds)
+    
+    with open(print_dir_master_hbonds , 'w') as fp:
+        for element in row: 
+            print(element)
+            fp.write(element)
+            fp.write("\n")
+            if(i == len_row):
+                str_tmp = str_tmp + element + ""
+            else:
+                str_tmp = str_tmp + element +"|"
+            i = i + 1 
+    
+        matrix_1d_hbond_sort_unique.append(str_tmp) 
+        count = count + 1
+        print()  
+
+print (len(matrix_1d_hbond_sort_unique))
+
+count = 0 
+matrix_key_search = []
+with open(file_v3_csv, 'w') as fp:
+    for row in matrix_1d_hbond_sort:
+        matrix_key_search.append(matrix_1d_hbond_sort_unique.index(row))
+
+        str_tmp = array_csv[count] + "," + pattern + "_master_hb_" + str(matrix_1d_hbond_sort_unique.index(row))
+        fp.write(str_tmp)
+        fp.write("\n")
+        print(str_tmp)
+    
+        count += 1
+
+print(len(array_csv))
+print(len(matrix_key_search))
+
+count = 0 
+with open(file_v3_hb_group, 'w') as fp:
+    for row in matrix_1d_hbond_sort_unique:
+        print ("index: " + str(count))
+        str_tmp = pattern + "_master_hb_" + str(count) + ":"
+
+        res_list = [i for i in range(len(matrix_1d_hbond_sort)) if matrix_1d_hbond_sort[i] == row]
+        i = 1
+        for element in res_list:
+            if(i == len(res_list)):
+                str_tmp = str_tmp + pattern_upper + "_" + str(element) + ""
+            else:
+                str_tmp = str_tmp + pattern_upper + "_" + str(element) + ","
+            i += 1
+    
+        fp.write(str_tmp)
+        fp.write("\n")
+
+        print("New indices list : " + str(res_list))
+        print(str_tmp)
+        print()
+        count += 1
