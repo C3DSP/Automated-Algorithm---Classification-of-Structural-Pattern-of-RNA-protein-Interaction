@@ -1,0 +1,47 @@
+import os
+import csv
+import sys
+
+pattern = str(sys.argv[1]) 
+res_num = int(sys.argv[2])
+file = pattern.lower()
+
+def get_files(path):
+    for file in os.listdir(path):
+        if os.path.isfile(os.path.join(path, file)):
+            yield file
+
+dir = 'lp_files'
+pattern_count = 1
+
+matrix = []
+file1 = dir+'/'+file+'-v2.lp'
+with open(file1) as f:
+    reader = csv.reader(f, delimiter=',')
+
+    string_combine = ''
+
+            
+    for row in reader:
+        seq_combine = ''
+        pdb_id = ''
+        pattern_count_str = str(pattern_count)
+        string_combine = pattern + "_" + pattern_count_str + ","
+                
+        row_matrix = []
+        for index_row in range(len(row)):
+            string_combine = string_combine + row[index_row] + ","
+            if (len(row[index_row]) > 4):
+                word_tmp = row[index_row].split(" ")
+                seq_tmp = word_tmp[1]
+
+                if (index_row == (res_num)):
+                    seq_combine = seq_combine + seq_tmp
+                else:
+                    seq_combine = seq_combine + seq_tmp + ":"
+
+                if (index_row == (res_num)):
+                    string_combine = string_combine + seq_combine
+                    print(string_combine)
+
+        pattern_count = pattern_count + 1
