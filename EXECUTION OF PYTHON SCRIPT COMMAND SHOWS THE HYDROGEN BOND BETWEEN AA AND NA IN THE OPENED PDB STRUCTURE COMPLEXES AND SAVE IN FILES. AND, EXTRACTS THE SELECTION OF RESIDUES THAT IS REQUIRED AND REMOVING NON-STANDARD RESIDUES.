@@ -1,0 +1,9 @@
+import sys
+from chimerax.core.commands import run 
+
+run(session, 'open pdb_cif/' + sys.argv[1] +'.cif')
+run(session, 'select solvent')
+run(session, 'delete atoms sel')
+run(session, 'delete bonds sel')
+run(session, 'hbonds saveFile hbonds_raw/'+sys.argv[1]+ '.hbonds reveal true')
+run(session, 'exit')
