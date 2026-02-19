@@ -1,0 +1,7 @@
+with open(r"C:\ triple-v1.lp", 'r') as file:
+    for count, line in enumerate(file):
+        pass
+
+print('Total Patterns for Triple Ver:', count + 1)
+
+file.close()
