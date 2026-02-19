@@ -1,0 +1,166 @@
+import csv
+import sys
+import re
+
+dir_file = 'lp_files'
+file = str(sys.argv[1]) 
+pattern = str(sys.argv[3])
+hbond_file = str(sys.argv[2])
+dir_hbond = 'hbonds_raw'
+
+matrix_all_str_hbond = []
+matrix_donor = []
+matrix_acceptor = []
+with open(dir_hbond+'/'+hbond_file) as f:
+    reader = csv.reader(f, delimiter=',')
+    
+    for row in reader:     
+        combine_str_hbond = ''
+        row_matrix = []
+        matrix_donor.append(row[2]) 
+        matrix_acceptor.append(row[4]) 
+
+        for index_row in range(len(row)):
+
+
+            if(index_row == (len(row)-1)):
+                combine_str_hbond = combine_str_hbond + row[index_row]
+            else:
+                combine_str_hbond = combine_str_hbond + row[index_row] + ","
+            
+
+        matrix_all_str_hbond.append(combine_str_hbond)
+
+matrix = []
+dir_write_hbond = "extract_hbonds_format/"
+with open(dir_file+'/'+file) as f:
+    reader = csv.reader(f, delimiter=',')
+    
+
+    index_outer = 0
+    for row in reader:     
+        row_matrix = []
+        print()
+        print("------------------------------------------------------------")
+        print("INDEX OUTER: ")
+        print(index_outer)
+        print (pattern)
+        print(row[0]) 
+        print(row[1]) 
+        print(row[2]) 
+        print(row[3]) 
+        print(row[4]) 
+            
+        index = 0    
+        for string_matrix_all_str_hbond in matrix_all_str_hbond:
+            word_tmp = string_matrix_all_str_hbond.split(",")
+            pdb_id_hbond = word_tmp[1]
+            donor = word_tmp[2]
+            acceptor = word_tmp[4]
+
+            if(pattern == 'pair'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "pair/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a")                    
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                                                    
+                index = index + 1    
+            if(pattern == 'triple'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "triple/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a")                    
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                    elif((re.search(row[3], donor) and re.search(row[4], acceptor)) or (re.search(row[4], donor) and re.search(row[3], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                                                    
+                index = index + 1                 
+            elif(pattern == 'quad1'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "quad1/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a")                    
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                    elif((re.search(row[3], donor) and re.search(row[4], acceptor)) or (re.search(row[4], donor) and re.search(row[3], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                    elif((re.search(row[4], donor) and re.search(row[5], acceptor)) or (re.search(row[5], donor) and re.search(row[4], acceptor))):
+                        print(string_matrix_all_str_hbond)     
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                                                    
+                index = index + 1     
+            elif(pattern == 'quad2'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "quad2/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a") 
+
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n")
+                    elif((re.search(row[2], donor) and re.search(row[4], acceptor)) or (re.search(row[4], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n")
+                    elif((re.search(row[2], donor) and re.search(row[5], acceptor)) or (re.search(row[5], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n")     
+
+                index = index + 1            
+            elif(pattern == 'quin1'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "quin1/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a")
+
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n")
+                    elif((re.search(row[3], donor) and re.search(row[4], acceptor)) or (re.search(row[4], donor) and re.search(row[3], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n")
+                    elif((re.search(row[4], donor) and re.search(row[5], acceptor)) or (re.search(row[5], donor) and re.search(row[4], acceptor))):
+                        print(string_matrix_all_str_hbond)   
+                        f_write.write(string_matrix_all_str_hbond + "\n")  
+                    elif((re.search(row[5], donor) and re.search(row[6], acceptor)) or (re.search(row[6], donor) and re.search(row[5], acceptor))):
+                        print(string_matrix_all_str_hbond)    
+                        f_write.write(string_matrix_all_str_hbond + "\n")                                     
+                
+                    f_write.close()
+                index = index + 1
+            elif(pattern == 'quin2'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "quin2/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a")
+
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                    elif((re.search(row[3], donor) and re.search(row[4], acceptor)) or (re.search(row[4], donor) and re.search(row[3], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                    elif((re.search(row[4], donor) and re.search(row[5], acceptor)) or (re.search(row[5], donor) and re.search(row[4], acceptor))):
+                        print(string_matrix_all_str_hbond)     
+                        f_write.write(string_matrix_all_str_hbond + "\n") 
+                    elif((re.search(row[4], donor) and re.search(row[6], acceptor)) or (re.search(row[6], donor) and re.search(row[4], acceptor))):
+                        print(string_matrix_all_str_hbond) 
+                        f_write.write(string_matrix_all_str_hbond + "\n")                                         
+            
+                index = index + 1                
+            elif(pattern == 'quin3'):
+                if(re.search(row[1], pdb_id_hbond)):
+                    dir_write_hbond_pattern = dir_write_hbond + "quin3/" + row[1] + "_" + row[0] + ".hbonds"
+                    f_write = open(dir_write_hbond_pattern, "a")                    
+                    if((re.search(row[2], donor) and re.search(row[3], acceptor)) or (re.search(row[3], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                    elif((re.search(row[2], donor) and re.search(row[4], acceptor)) or (re.search(row[4], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)
+                    elif((re.search(row[2], donor) and re.search(row[5], acceptor)) or (re.search(row[5], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)     
+                    elif((re.search(row[2], donor) and re.search(row[6], acceptor)) or (re.search(row[6], donor) and re.search(row[2], acceptor))):
+                        print(string_matrix_all_str_hbond)                                         
+            
+                index = index + 1  
+        index_outer = index_outer +1
