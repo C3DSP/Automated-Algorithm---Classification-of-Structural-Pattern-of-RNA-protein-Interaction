@@ -1,11 +1,11 @@
-These script files uploaded here are developed to perform classification of structural patterns of RNA-protein Interactions. 
-Therefore, the funtcions of script commands are summarized and listed down below:
-1. Shows the Hydrogen Bond Between Amino Acid and Nucleic Acid in the Opened PDB Structure Complexes and Save in Files.
-2. Extraction of the required selection of residues and removing Non-Standard Residues.
-3. Selection the Numbers of Residues that required for Analyse and Specific Choosing Pattern Types based on Number of Residues that are needed for 3D Pattern Extraction.
-4. Removal of Duplicates and perfoming Save in lp Files.
-5. Calculation of the Total of Patterns Before Duplicates Removal and After Duplicates Removal.
-6. Collection of Hydrogen Bond Information Data of PDB Structures.
-7. Collection of Pattern and PDB ID, Pattern Sequence, Residue Pattern and perform Save in Pattern Type CSV File.
-8. Extraction of Hydrogen Bond for Each Line in CSV File, and Saved in Folder.
-9. Classification of 3D Extracted Pattern Arrangement.
+These script files uploaded here were developed to perform classification of structural patterns of RNA–protein interactions. 
+Therefore, the functions of the script commands are summarized and listed below:
+1. Shows the hydrogen bonds between amino acids and nucleic acids in the opened PDB structure complexes and saves them into files.
+2. Extraction of the required selection of residues and removal of non-standard residues.
+3. Selection of the number of residues required for analysis and specific pattern types based on the number of residues needed for 3D pattern extraction.
+4. Removal of duplicates and saving into .lp files.
+5. Calculation of the total number of patterns before and after duplicate removal.
+6. Collection of hydrogen bond information data from PDB structures.
+7. Collection of pattern and PDB ID, pattern sequence, and residue pattern, and saving into a pattern type CSV file.
+8. Extraction of hydrogen bonds for each line in the CSV file and saving them into a folder.
+9. Classification of the extracted 3D pattern arrangements.
