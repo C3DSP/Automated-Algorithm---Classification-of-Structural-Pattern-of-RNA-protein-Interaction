@@ -1,5 +1,5 @@
 This repository contains the script command files, which were developed to perform classification of structural patterns of RNA–protein interactions. 
-To execute the script command files, kindly install the GrandIso-Network from the given link: https://github.com/aplbrain/grandiso-networkx
+To execute the script command files, kindly install the GrandIso-Network from the given link: https://github.com/aplbrain/grandiso-networkx .
 Motif identification was performed using the GrandIso-Network algorithm, which implements a subgraph isomorphism approach to detect recurring structural motifs within RNA–protein interaction networks.
 Therefore, the functions of the script command files are summarized and listed below:
 1. Shows the hydrogen bonds between amino acids and nucleic acids in the opened PDB structure complexes and saves them into files.
