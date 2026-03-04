@@ -1,7 +1,8 @@
 This repository contains the script command files, which were developed to perform classification of structural patterns of RNA–protein interactions. 
-To execute the script command files, kindly install the GrandIso-Network from the given link: https://github.com/aplbrain/grandiso-networkx .
-Pattern annotation was performed using the GrandIso-Network algorithm, which implements a subgraph isomorphism approach to identify recurring structural patterns within RNA–protein interaction complexes.
-Therefore, the functions of the script command files are summarized and listed below:
+Before executing the script command files, please install Grandiso-Networkx using the provided link: https://github.com/aplbrain/grandiso-networkx .
+Pattern annotation was performed using the Grandiso-Networkx algorithm, which is based on subgraph isomorphism.
+Once the installation is complete, you can run the following script command files to identify recurring structural patterns within RNA-protein interaction complexes.
+Therefore, the below list shown is a summary of the functions of these script command files:
 1. Shows the hydrogen bonds between amino acids and nucleic acids in the opened PDB structure complexes and saves them into files.
 2. Extraction of the required selection of residues and removal of non-standard residues.
 3. Selection of the number of residues required for analysis and specific pattern types based on the number of residues needed for 3D pattern extraction.
